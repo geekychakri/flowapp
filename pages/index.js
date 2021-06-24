@@ -1,65 +1,96 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import { useState } from "react";
+import dynamic from "next/dynamic";
 
-export default function Home() {
+import { getSession } from "@auth0/nextjs-auth0";
+import { motion } from "framer-motion";
+import { ArrowRight, Video } from "react-feather";
+
+import "react-modal-video/css/modal-video.min.css";
+
+import { fadeInUp, slideIn, stagger } from "./../animation/motion";
+
+const ModalVideo = dynamic(() => import("react-modal-video"), {
+  ssr: false,
+});
+
+const Home = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Flow | The minimalist productivity app</title>
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <motion.header
+        className="header"
+        initial="initial"
+        animate="animate"
+        exit={{ opacity: 0 }}
+      >
+        <motion.div variants={stagger} className="header__text-box">
+          <h1 className="heading-primary">
+            <motion.span variants={fadeInUp} className="heading-primary--main">
+              Get. Set. Flow.
+            </motion.span>
+            <motion.span variants={fadeInUp} className="heading-primary--sub">
+              The minimalist productivity app.
+            </motion.span>
+          </h1>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+          <motion.div className="header__btns" variants={slideIn}>
+            <motion.a href="/api/auth/login" className="btn-main">
+              <span className="btn-main__text">Get Into Flow</span>
+              <ArrowRight size={28} className="icon-arrow" />
+            </motion.a>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+            <button className="btn-video" onClick={() => setIsOpen(true)}>
+              <span className="btn-video__text">Long story short</span>
+              <Video size={28} />
+            </button>
+          </motion.div>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+          <motion.div variants={fadeInUp} className="maker">
+            Made with ❤️ by{" "}
+            <a
+              href="https://twitter.com/geekychakri"
+              rel="noopener norefereer"
+              target="__blank"
+              className="maker__name"
+            >
+              Chakri
+            </a>
+          </motion.div>
+        </motion.div>
+      </motion.header>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+      <ModalVideo
+        channel="youtube"
+        autoplay
+        isOpen={isOpen}
+        videoId="ay9y3CTkT40"
+        onClose={() => setIsOpen(false)}
+      />
+    </>
+  );
+};
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+export default Home;
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+  const session = getSession(req, res);
+
+  if (session?.user) {
+    return {
+      redirect: {
+        destination: "/sounds",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 }
