@@ -51,7 +51,7 @@ function MyApp({ Component, pageProps }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_VERCEL_URL}/cover.png`}
+          content="https://getintoflow.vercel.app/cover.png"
         />
         <meta name="twitter:title" content="Flow" />
         <meta

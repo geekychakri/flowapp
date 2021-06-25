@@ -75,10 +75,10 @@ const SideNav = () => {
             router.pathname === "/timebox" ? "active" : ""
           }`}
         >
-          <Link href="/timebox">
+          <Link href="/timeboxing">
             <a className="sidenav__link">
               <Tippy
-                content={<JSXContent title="Timebox" />}
+                content={<JSXContent title="Timeboxing" />}
                 placement="right-start"
                 animation="shift-away-subtle"
                 arrow={false}
