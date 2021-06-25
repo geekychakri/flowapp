@@ -23,7 +23,7 @@ const ding = new Howl({
   src: ["sounds/ding.mp3"],
 });
 
-const TimeBox = () => {
+const TimeBoxing = () => {
   const [mins, setMins] = useState(25);
   const [taskMins, setTaskMins] = useState(25); //TODO:
   const [secs, setSecs] = useState(0);
@@ -232,6 +232,6 @@ const TimeBox = () => {
   );
 };
 
-export default TimeBox;
+export default TimeBoxing;
 
 export const getServerSideProps = withPageAuthRequired();

@@ -64,7 +64,7 @@ function Tools() {
               <span className="tools__item-title">ToDo List</span>
             </motion.a>
           </Link>
-          <Link href="/timebox">
+          <Link href="/timeboxing">
             <motion.a
               variants={fadeInUp}
               whileHover={{ scale: 1.1 }}
@@ -72,7 +72,7 @@ function Tools() {
               className="tools__item"
             >
               <Box size={32} />
-              <span className="tools__item-title">TimeBox</span>
+              <span className="tools__item-title">Timeboxing</span>
             </motion.a>
           </Link>
           <Link href="/notes" className="tools__card">

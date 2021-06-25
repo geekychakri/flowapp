@@ -813,41 +813,32 @@ body {
 
 /*Confirm Modal*/
 
-.react-confirm-alert-overlay {
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.confirm__modal {
-}
 .confirm__modal-heading {
-  font-size: 2.6rem;
+  font-size: 2.8rem;
 }
 
 .confirm__modal-text {
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
 }
 
 .confirm__modal-btn {
   border: none;
-  color: var(--color-white);
-  padding: 1rem 2rem;
+  padding: 1.5rem 2rem;
   font-size: 2rem;
   font-weight: 600;
   border-radius: 4px;
-  color: #181818;
+  cursor: pointer;
 }
 
 .confirm__modal-btn:nth-of-type(1) {
   background-color: var(--color-grey);
-  cursor: pointer;
 }
 
 .confirm__modal-btn:nth-of-type(2) {
   background-color: var(--color-primary);
-  margin-left: 2rem;
+  margin-left: 1.5rem;
   color: var(--color-white);
-  cursor: pointer;
 }
 
 /*MASONRY*/
@@ -951,7 +942,7 @@ body {
   border: none;
   background-color: var(--color-primary);
   color: var(--color-white);
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 600;
   padding: 1.5rem 3rem;
   border-radius: 4px;
@@ -1008,7 +999,7 @@ body {
   border: none;
   background-color: var(--color-primary);
   color: var(--color-white);
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 600;
   padding: 1.5rem 5rem;
   border-radius: 4px;
@@ -1478,6 +1469,10 @@ body {
 
   .sounds__grid {
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  }
+  .todos__input-wrapper,
+  .notes__input-wrapper {
+    width: 70%;
   }
 }
 

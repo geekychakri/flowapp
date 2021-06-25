@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 import ReactPlayer from "react-player";
 import { Play, Pause, SkipForward, SkipBack, WifiOff } from "react-feather";
@@ -147,12 +148,12 @@ const Lofi = () => {
             target="__blank"
             rel="noopener noreferrer"
           >
-            <img
+            <Image
               src={`/img/${stations[stationIndex].img}`}
               alt="lofi"
               className="lofi__image"
-              width="200"
-              height="200"
+              width="180"
+              height="180"
             />
           </a>
 
