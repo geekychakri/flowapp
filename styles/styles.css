@@ -1051,7 +1051,7 @@ body {
 
 .timebox__item-indicator {
   display: inline-block;
-  padding: 8px;
+  padding: 6px;
   border-radius: 50%;
   background: #f75858;
   cursor: pointer;
@@ -1102,26 +1102,8 @@ body {
   position: relative;
 }
 
-.lofi__player-image {
-  position: relative;
-  width: 20rem;
-  height: 20rem;
-  /* background-color: lightyellow; */
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 2rem;
-  animation: rotate 4s linear infinite;
-  animation-play-state: paused;
-}
-
-.lofi__player-image.active {
-  animation-play-state: running;
-}
-
 .lofi__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  border-radius: 50%;
 }
 
 .lofi__player-info {
@@ -1206,20 +1188,23 @@ body {
 
 /*UTILS*/
 /*SPINNER*/
-.donutSpinner {
-  display: inline-block;
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border: 4px solid transparent;
-  border-left-color: var(--color-white);
-  border-radius: 50%;
-  width: 3rem;
+.spinner {
   height: 3rem;
-  animation: donut-spin 1.2s linear infinite;
+  width: 3rem;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  border-top-color: var(--color-primary);
+  animation: spin 600ms linear infinite;
 }
 
-@keyframes donut-spin {
+.todo__spinner,
+.notes__spinner {
+  border-top-color: #fff;
+}
+
+@keyframes spin {
   to {
-    transform: rotate(1turn);
+    transform: rotate(360deg);
   }
 }
 

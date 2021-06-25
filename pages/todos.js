@@ -70,7 +70,6 @@ const Todos = ({ initialTodos }) => {
   const updateTodo = async (updatedTask) => {
     // console.log(updatedTask);
     setDisable(true);
-    toast.loading("Updating...", { id: "update", style: toastStyles });
     try {
       const res = await fetch("/api/updateTodo", {
         method: "POST",
@@ -82,28 +81,20 @@ const Todos = ({ initialTodos }) => {
 
       if (!res.ok) {
         setDisable(false);
-        toast.remove("update");
         toast.error("Something went wrong", {
           style: toastStyles,
         });
         return;
       }
-
-      setDisable(false);
-      toast.remove("update");
-      toast.success("Successfully updated !", {
-        style: toastStyles,
-      });
-
       const existingTodos = [...todos];
       const existingTodo = existingTodos.find(
         (todo) => todo.id === updatedTask.id
       );
       existingTodo.completed = updatedTask.completed;
       setTodos(existingTodos);
+      setDisable(false);
     } catch (err) {
       setDisable(false);
-      toast.remove("update");
       toast.error(err.message, {
         style: toastStyles,
       });
@@ -112,10 +103,6 @@ const Todos = ({ initialTodos }) => {
 
   const deleteTodo = async (id) => {
     setDisable(true);
-    toast.loading("Deleting...", {
-      id: "delete",
-      style: toastStyles,
-    });
     try {
       const res = await fetch("/api/deleteTodo", {
         method: "POST",
@@ -129,7 +116,6 @@ const Todos = ({ initialTodos }) => {
 
       if (!res.ok) {
         setDisable(false);
-        toast.remove("delete");
         toast.error("Something went wrong", {
           id: "delete",
           style: toastStyles,
@@ -140,13 +126,8 @@ const Todos = ({ initialTodos }) => {
       const newTodos = existingTodos.filter((todo) => todo.id !== id);
       setTodos(newTodos);
       setDisable(false);
-      toast.remove("delete");
-      toast.success("Successfully deleted !", {
-        style: toastStyles,
-      });
     } catch (err) {
       setDisable(false);
-      toast.remove("delete");
       toast.error(err.message, {
         style: toastStyles,
       });
@@ -186,7 +167,7 @@ const Todos = ({ initialTodos }) => {
               required
             />
             <button type="submit" className="todo__addBtn">
-              {loading ? <div className="donutSpinner"></div> : "Add"}
+              {loading ? <div className="spinner todo__spinner"></div> : "Add"}
             </button>
           </div>
         </form>

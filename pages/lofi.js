@@ -147,13 +147,13 @@ const Lofi = () => {
             target="__blank"
             rel="noopener noreferrer"
           >
-            <div className="lofi__player-image">
-              <img
-                src={`/img/${stations[stationIndex].img}`}
-                alt="lofi"
-                className="lofi__image"
-              />
-            </div>
+            <img
+              src={`/img/${stations[stationIndex].img}`}
+              alt="lofi"
+              className="lofi__image"
+              width="200"
+              height="200"
+            />
           </a>
 
           <div className="lofi__player-info">

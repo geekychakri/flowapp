@@ -114,6 +114,7 @@ const Navbar = () => {
     return (
       <nav className="navigation">
         <Logo />
+        <div className="spinner"></div>
       </nav>
     );
   }

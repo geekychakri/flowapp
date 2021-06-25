@@ -149,7 +149,7 @@ const Notes = ({ initialNotes }) => {
               required
             ></textarea>
             <button className="notes__btn">
-              {loading ? <div className="donutSpinner"></div> : "Add"}
+              {loading ? <div className="spinner notes__spinner"></div> : "Add"}
             </button>
           </div>
         </form>
