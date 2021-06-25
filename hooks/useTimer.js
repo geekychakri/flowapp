@@ -50,7 +50,7 @@ function useTimer() {
           setMins((prevMins) => prevMins - 1);
         } else if (currMins == 0 && currSecs == 0) {
           if (mode === "shortBreak" || mode === "longBreak") {
-            notify("Break's over. Back to work !", "🚀");
+            notify("Break's over. Back to work", "🚀");
             ding.play();
           } else if (mode === "work") {
             notify("Well Done! Take a break", "🍫");
