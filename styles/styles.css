@@ -341,7 +341,6 @@ body {
   position: fixed;
   top: 9rem;
   bottom: 0;
-  /* z-index: 1; */
   /* background-color: rgb(247, 88, 88); */
 }
 
@@ -389,7 +388,6 @@ body {
 }
 
 /*TOOLS*/
-
 .tools {
   flex: 1;
   display: flex;
@@ -720,10 +718,6 @@ body {
   margin-bottom: 2rem;
 }
 
-.notes__form {
-  /* background-color: pink; */
-}
-
 .notes__input-wrapper {
   width: 50%;
   margin: 0 auto;
@@ -855,7 +849,6 @@ body {
 }
 
 .notes__item {
-  /* height: max-content; */
   background-color: var(--color-white);
   /* border: 2px solid #cfcbcc; */
   text-align: left;
@@ -1109,10 +1102,6 @@ body {
   display: flex;
   align-items: center;
 }
-
-/* pre {
-  font-family: inherit;
-} */
 
 .lofi__player-btns {
   min-height: 10rem;
@@ -1489,7 +1478,7 @@ body {
   }
 }
 
-/*1800px*/
+/*Big Desktop*/
 @media (min-width: 112.5em) {
   html {
     font-size: 87.5%; /*1rem = 14px*/

@@ -34,8 +34,6 @@ const Todos = ({ initialTodos }) => {
         body: JSON.stringify({ task }),
       });
 
-      // console.log(res);
-
       if (!res.ok) {
         setLoading(false);
         if (res.status === 400) {

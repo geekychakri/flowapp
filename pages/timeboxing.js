@@ -25,7 +25,7 @@ const ding = new Howl({
 
 const TimeBoxing = () => {
   const [mins, setMins] = useState(25);
-  const [taskMins, setTaskMins] = useState(25); //TODO:
+  const [taskMins, setTaskMins] = useState(25);
   const [secs, setSecs] = useState(0);
   const [value, setValue] = useState("");
   const [focus, setFocus] = useState([]);

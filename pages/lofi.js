@@ -22,7 +22,6 @@ const Lofi = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [stationIndex, setStationIndex] = useState(0);
   const [buffering, setBuffering] = useState(false);
-
   const [offline, setOffline] = useState(false);
 
   console.log(stations[stationIndex]);

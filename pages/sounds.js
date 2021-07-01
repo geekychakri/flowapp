@@ -13,8 +13,6 @@ import sounds from "../data/sounds";
 const Sounds = () => {
   const [flow] = useState({});
 
-  console.log("Rendered");
-
   const playSound = (e) => {
     const sound = e.target.parentElement.parentElement.dataset.sound;
     const soundID = sound;
