@@ -71,5 +71,5 @@ Start the app
 
 ## Author
 
-[GeekyChakri](https://www.github.com/GeekyChakri)
+[GeekyChakri](https://github.com/GeekyChakri)
 
