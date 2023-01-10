@@ -1,12 +1,12 @@
 const stations = [
   {
-    id: "5qap5aO4i9A",
+    id: "jfKfPfyJRdk",
     name: "Station 1",
     img: "lofi-1.jpg",
   },
 
   {
-    id: "DWcJFNfaw9c",
+    id: "rUxyKA_-grg",
     name: "Station 2",
     img: "lofi-2.jpg",
   },
@@ -16,7 +16,7 @@ const stations = [
     img: "lofi-3.jpg",
   },
   {
-    id: "WBfbkPTqUtU",
+    id: "kgx4WGK0oNU",
     name: "Station 4",
     img: "lofi-4.jpg",
   },

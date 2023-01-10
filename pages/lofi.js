@@ -12,7 +12,7 @@ import stations from "./../data/stations";
 import { fadeIn } from "../animation/motion";
 
 const toastStyles = {
-  fontSize: "2rem",
+  fontSize: "1.8rem",
   fontWeight: "600",
   backgroundColor: "#212529",
   color: "#fff",

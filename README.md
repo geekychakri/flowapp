@@ -71,8 +71,5 @@ Start the app
 
 ## Author
 
-[GeekyChakri](https://www.github.com/octokatherine)
+[GeekyChakri](https://www.github.com/GeekyChakri)
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
