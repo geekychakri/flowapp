@@ -1,10 +1,9 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { motion } from "framer-motion";
 import Masonry from "react-masonry-css";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { getSession } from "@auth0/nextjs-auth0";
 import "react-responsive-modal/styles.css";
 import Modal from "react-responsive-modal";
 import toast, { Toaster } from "react-hot-toast";
@@ -19,13 +18,11 @@ const toastStyles = {
   color: "#fff",
 };
 
-const Notes = ({ initialNotes }) => {
-  console.log(initialNotes);
-  const [notes, setNotes] = useState(initialNotes);
+const Notes = () => {
+  const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [todoId, setTodoId] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const onOpenModal = () => setOpen(true);
@@ -33,32 +30,17 @@ const Notes = ({ initialNotes }) => {
 
   const addNote = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch("/api/createNote", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          body,
-        }),
-      });
 
-      if (!res.ok) {
-        setLoading(false);
-        if (res.status === 400) {
-          throw new Error("Input fields required");
-        } else {
-          throw new Error("Oops! Something went wrong");
-        }
-      }
-      const newTodo = await res.json();
-      setNotes([...notes, { title, body, id: newTodo.id }]);
+    try {
+      const existingNotes = [
+        ...notes,
+        { title, body, id: window.crypto.randomUUID() },
+      ];
+      setNotes(existingNotes);
+      window.localStorage.setItem("notes", JSON.stringify(existingNotes));
       setTitle("");
       setBody("");
-      setLoading(false);
+
       if (typeof window !== "undefined") {
         window.scrollTo(0, document.body.scrollHeight);
       }
@@ -76,25 +58,11 @@ const Notes = ({ initialNotes }) => {
   };
 
   const deleteNote = async (id) => {
-    toast.loading("Deleting...", { id: "delete", style: toastStyles });
     try {
-      const res = await fetch("/api/deleteNote", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
-      if (!res.ok) {
-        toast.remove("delete");
-        onCloseModal();
-        throw new Error("Something went wrong");
-      }
-      toast.remove("delete");
       const existingNotes = [...notes];
       const filteredNotes = existingNotes.filter((note) => note.id !== id);
       setNotes(filteredNotes);
-      toast.success("Deleted Successfully !", { style: toastStyles });
+      window.localStorage.setItem("notes", JSON.stringify(filteredNotes));
       onCloseModal();
     } catch (err) {
       toast.remove("delete");
@@ -109,6 +77,14 @@ const Notes = ({ initialNotes }) => {
       });
     }
   };
+
+  useEffect(() => {
+    // Retrieve  notes from local storage on component mount
+    const storedNotes = localStorage.getItem("notes");
+    if (storedNotes) {
+      setNotes(JSON.parse(storedNotes));
+    }
+  }, []);
 
   const breakpoints = {
     default: 3,
@@ -148,9 +124,7 @@ const Notes = ({ initialNotes }) => {
               value={body}
               required
             ></textarea>
-            <button className="notes__btn">
-              {loading ? <div className="spinner notes__spinner"></div> : "Add"}
-            </button>
+            <button className="notes__btn">Add</button>
           </div>
         </form>
 
@@ -211,46 +185,4 @@ const Notes = ({ initialNotes }) => {
 
 export default Notes;
 
-export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps(context) {
-    const { req, res } = context;
-    const session = await getSession(req, res);
-
-    let notes = [];
-
-    try {
-      if (session?.user) {
-        const data = await fetch(process.env.DB, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Basic ${process.env.DB_KEY}`,
-          },
-          body: JSON.stringify({
-            operation: "search_by_value",
-            schema: "flowdb",
-            table: "notes",
-            search_attribute: "userId",
-            search_value: session.user.sub,
-            get_attributes: ["title", "body", "id"],
-          }),
-        });
-        notes = await data.json();
-      }
-
-      return {
-        props: {
-          initialNotes: notes,
-        },
-      };
-    } catch (err) {
-      console.error(err);
-      return {
-        props: {
-          err: "Something went wrong",
-          initialNotes: notes,
-        },
-      };
-    }
-  },
-});
+export const getServerSideProps = withPageAuthRequired();

@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-import { getSession } from "@auth0/nextjs-auth0";
 import { motion, AnimatePresence } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
@@ -16,7 +15,7 @@ const toastStyles = {
   color: "#fff",
 };
 
-const Todos = ({ initialTodos }) => {
+const Todos = () => {
   const [task, setTask] = useState("");
   const [todos, setTodos] = useState([]);
   const [disable, setDisable] = useState(false);
@@ -26,31 +25,13 @@ const Todos = ({ initialTodos }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("/api/createTodo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ task }),
-      });
-
-      if (!res.ok) {
-        setLoading(false);
-        if (res.status === 400) {
-          throw new Error("Todo field required");
-        } else {
-          throw new Error("Oops! Something went wrong");
-        }
-      }
-
-      const newTodo = await res.json();
-
       const existingTodos = [...todos];
       const latestTodos = [
         ...existingTodos,
-        { task: task, completed: false, id: newTodo.id },
+        { task: task, completed: false, id: window.crypto.randomUUID() },
       ];
       setTodos(latestTodos);
+      window.localStorage.setItem("todos", JSON.stringify(latestTodos));
       setTask("");
       setLoading(false);
       if (typeof window !== "undefined") {
@@ -66,31 +47,15 @@ const Todos = ({ initialTodos }) => {
   };
 
   const updateTodo = async (updatedTask) => {
-    // console.log(updatedTask);
-    setDisable(true);
     try {
-      const res = await fetch("/api/updateTodo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedTask),
-      });
-
-      if (!res.ok) {
-        setDisable(false);
-        toast.error("Something went wrong", {
-          style: toastStyles,
-        });
-        return;
-      }
       const existingTodos = [...todos];
       const existingTodo = existingTodos.find(
         (todo) => todo.id === updatedTask.id
       );
       existingTodo.completed = updatedTask.completed;
+      console.log(existingTodos);
+      window.localStorage.setItem("todos", JSON.stringify(existingTodos));
       setTodos(existingTodos);
-      setDisable(false);
     } catch (err) {
       setDisable(false);
       toast.error(err.message, {
@@ -100,28 +65,10 @@ const Todos = ({ initialTodos }) => {
   };
 
   const deleteTodo = async (id) => {
-    setDisable(true);
     try {
-      const res = await fetch("/api/deleteTodo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
-
-      console.log(res);
-
-      if (!res.ok) {
-        setDisable(false);
-        toast.error("Something went wrong", {
-          id: "delete",
-          style: toastStyles,
-        });
-        return;
-      }
       const existingTodos = [...todos];
       const newTodos = existingTodos.filter((todo) => todo.id !== id);
+      window.localStorage.setItem("todos", JSON.stringify(newTodos));
       setTodos(newTodos);
       setDisable(false);
     } catch (err) {
@@ -132,10 +79,12 @@ const Todos = ({ initialTodos }) => {
     }
   };
 
-  // console.log(todos);
-
   useEffect(() => {
-    setTodos(initialTodos);
+    // Retrieve todos from local storage on component mount
+    const storedTodos = localStorage.getItem("todos");
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
   }, []);
 
   return (
@@ -194,46 +143,4 @@ const Todos = ({ initialTodos }) => {
 
 export default Todos;
 
-export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps(context) {
-    const { req, res } = context;
-    const session = await getSession(req, res);
-
-    let todos = [];
-
-    try {
-      if (session?.user) {
-        const data = await fetch(process.env.DB, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Basic ${process.env.DB_KEY}`,
-          },
-          body: JSON.stringify({
-            operation: "search_by_value",
-            schema: "flowdb",
-            table: "todos",
-            search_attribute: "userId",
-            search_value: session.user.sub,
-            get_attributes: ["task", "completed", "id"],
-          }),
-        });
-
-        todos = await data.json();
-        console.log(todos);
-      }
-      return {
-        props: {
-          initialTodos: todos,
-        },
-      };
-    } catch (err) {
-      return {
-        props: {
-          err: "Something went wrong",
-          initialTodos: todos,
-        },
-      };
-    }
-  },
-});
+export const getServerSideProps = withPageAuthRequired();
